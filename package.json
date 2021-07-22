@@ -1,0 +1,42 @@
+{
+  "name": "github-pr-commits",
+  "version": "1.0.0",
+  "description": "Suggest Pull Request commits white typing",
+  "keywords": [
+    "github",
+    "web-extension"
+  ],
+  "homepage": "https://github.com/ikim23/github-pr-commits#readme",
+  "repository": "github:ikim23/github-pr-commits",
+  "license": "MIT",
+  "author": "ikim23",
+  "targets": {
+    "webext-dev": {
+      "sourceMap": {
+        "inline": true,
+        "inlineSources": true
+      }
+    },
+    "webext-prod": {}
+  },
+  "scripts": {
+    "start": "parcel src/manifest.json --host localhost --target webext-dev",
+    "build": "parcel build src/manifest.json --target webext-prod"
+  },
+  "dependencies": {
+    "@octokit/core": "3.5.1",
+    "caret-pos": "2.0.0",
+    "escape-string-regexp": "1.0.5",
+    "jquery": "3.6.0",
+    "lodash": "4.17.21"
+  },
+  "devDependencies": {
+    "@parcel/config-webextension": "2.0.0-beta.3.1",
+    "parcel": "2.0.0-beta.3.1"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
+  }
+}

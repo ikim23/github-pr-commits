@@ -14,8 +14,8 @@
     {
       "run_at": "document_start",
       "matches": ["https://github.com/*"],
-      "js": ["main.js"],
-      "css": ["main.css"]
+      "js": ["content.js"],
+      "css": ["content.css"]
     }
   ]
 }

@@ -15,10 +15,16 @@
     "build": "parcel build src/manifest.json --target webext-prod"
   },
   "dependencies": {
+    "jquery": "^3.6.0",
     "octokit": "^1.1.0"
   },
   "devDependencies": {
     "@parcel/config-webextension": "^2.0.0-beta.3.1",
     "parcel": "^2.0.0-beta.3.1"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "printWidth": 120
   }
 }

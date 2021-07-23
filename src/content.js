@@ -1,4 +1,5 @@
 import $ from 'jquery'
+import _ from 'lodash'
 import { Octokit } from 'octokit'
 
 const URL_PATTERN = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)*/
@@ -14,10 +15,37 @@ $(async () => {
       commits = await getPullCommits()
     })
     .on('input', (event) => {
-      const { value } = event.target
+      const { value, selectionEnd } = event.target
+      const valueBeforeCarret = value.substr(0, selectionEnd)
 
-      if (hasCommitKey(value)) {
-        console.log(commits)
+      if (hasCommitKey(valueBeforeCarret)) {
+        $(event.currentTarget)
+          .parents('.write-content')
+          .first()
+          .append(
+            `<ul
+              role="listbox"
+              id="commit-list"
+              class="suggester-container suggester suggestions list-style-none position-absolute"
+            >
+              ${commits
+                .map(
+                  (commit, index) =>
+                    `<li
+                      role="option"
+                      class="markdown-tile"
+                      data-value="${commit.sha}"
+                      aria-selected="${index == 0}"
+                    >
+                      <small>${commit.sha}</small>
+                      ${commit.message}
+                    </li>`
+                )
+                .join('')}
+            </ul>`
+          )
+      } else {
+        $('#commit-list').remove()
       }
     })
 })
@@ -28,16 +56,22 @@ async function getPullCommits() {
     return []
   }
 
-  const { data } = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}/commits', pullParams)
-  console.log(data)
+  const { status, data } = await octokit.request('GET /repos/{owner}/{repo}/pulls/{pull_number}/commits', {
+    ...pullParams,
+    per_page: 100,
+  })
+
+  if (status != 200) {
+    return []
+  }
 
   const commits = data.map(({ sha, commit }) => ({
-    sha,
+    sha: sha.substr(0, 7),
     message: commit.message,
     date: commit.author.date,
   }))
 
-  return commits
+  return _.orderBy(commits, 'date', ['desc'])
 }
 
 function parsePullUrl() {

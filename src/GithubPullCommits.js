@@ -45,8 +45,16 @@ export default function GithubPullCommit({ trigger, token }) {
 
   function canOpen(inputElement) {
     const { value, selectionEnd: carret } = inputElement
-    const valueBeforeCarret = value.substr(0, carret)
-    return valueBeforeCarret == trigger || new RegExp(`\\s${escapeRegex(trigger)}$`).test(valueBeforeCarret)
+
+    if (value == trigger) {
+      return true
+    }
+
+    if (value.length == carret) {
+      return new RegExp(`\\s${escapeRegex(trigger)}$`).test(value)
+    }
+
+    return new RegExp(`\\s${escapeRegex(trigger)}\\s$`).test(value.substr(0, carret + 1))
   }
 
   async function fetchCommits() {

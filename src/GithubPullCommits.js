@@ -1,10 +1,17 @@
 import _ from 'lodash'
 import $ from 'jquery'
 import { Octokit } from 'octokit'
+import { isDev } from './utils'
 
 const PULL_URL_PATTERN = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)*/
 const COMMIT_LIST_ID = 'gh-pull-commits'
-const COMMIT_KEY = 'cmt'
+
+function createOctokit(token) {
+  if (isDev()) {
+    return new Octokit({ auth: token ?? process.env.GITHUB_TOKEN })
+  }
+  return new Octokit(token ? { auth: token } : undefined)
+}
 
 function parsePullUrl() {
   const match = window.location.href.match(PULL_URL_PATTERN)
@@ -17,8 +24,8 @@ function parsePullUrl() {
   return { owner, repo, pull_number }
 }
 
-export default function GithubPullCommit() {
-  const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN })
+export default function GithubPullCommit({ trigger, token }) {
+  const octokit = createOctokit(token)
   let input = null
   let commits = []
   let selectedSha = ''
@@ -36,7 +43,7 @@ export default function GithubPullCommit() {
   function canOpen(inputElement) {
     const { value, selectionEnd: carret } = inputElement
     const valueBeforeCarret = value.substr(0, carret)
-    return valueBeforeCarret == COMMIT_KEY || valueBeforeCarret.substr(-(COMMIT_KEY.length + 1)) == ' ' + COMMIT_KEY
+    return valueBeforeCarret == trigger || valueBeforeCarret.substr(-(trigger.length + 1)) == ' ' + trigger
   }
 
   async function fetchCommits() {
@@ -118,7 +125,7 @@ export default function GithubPullCommit() {
   function enterCommit(sha) {
     const { value, selectionEnd: carret } = input
 
-    let newValue = value.substring(0, carret - COMMIT_KEY.length) + sha
+    let newValue = value.substring(0, carret - trigger.length) + sha
     const newCarrent = newValue.length
     newValue += value.substring(carret)
 

@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  padding: 1em;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field + .field {
+  margin-top: 1em;
+}
+
+.label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.25em;
+}
+
+.input {
+  padding: 0.25em;
+  font-size: 1rem;
+}
+
+.submit {
+  margin-top: 1em;
+  padding: 0.25em 0.5em;
+  font-size: 1rem;
+}

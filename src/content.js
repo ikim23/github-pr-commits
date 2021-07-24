@@ -1,19 +1,22 @@
 import $ from 'jquery'
 import GithubPullCommit from './GithubPullCommits'
+import { getOptions } from './storage'
 
-$(async () => {
-  const app = GithubPullCommit()
-
+$(() => {
+  let app = null
   const keyActions = {
-    Enter: app.enterCommit,
-    Escape: app.close,
-    ArrowUp: app.selectPreviousCommit,
-    ArrowDown: app.selectNextCommit,
+    Enter: () => app.enterCommit(),
+    Escape: () => app.close(),
+    ArrowUp: () => app.selectPreviousCommit(),
+    ArrowDown: () => app.selectNextCommit(),
   }
 
   $('.comment-form-textarea')
     .on('focus', () => {
-      app.fetchCommits()
+      getOptions((options) => {
+        app = GithubPullCommit(options)
+        app.fetchCommits()
+      })
     })
     .on('input', (event) => {
       if (app.canOpen(event.target)) {

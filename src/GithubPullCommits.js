@@ -1,5 +1,7 @@
 import _ from 'lodash'
 import $ from 'jquery'
+import escapeRegex from 'escape-string-regexp'
+import { position } from 'caret-pos'
 import { Octokit } from '@octokit/core'
 import { isDev } from './utils'
 
@@ -33,6 +35,7 @@ export default function GithubPullCommit({ trigger, token }) {
   return {
     fetchCommits,
     canOpen,
+    isOpen,
     open,
     enterCommit: () => enterCommit(selectedSha),
     selectNextCommit,
@@ -43,7 +46,7 @@ export default function GithubPullCommit({ trigger, token }) {
   function canOpen(inputElement) {
     const { value, selectionEnd: carret } = inputElement
     const valueBeforeCarret = value.substr(0, carret)
-    return valueBeforeCarret == trigger || valueBeforeCarret.substr(-(trigger.length + 1)) == ' ' + trigger
+    return valueBeforeCarret == trigger || new RegExp(`\\s${escapeRegex(trigger)}$`).test(valueBeforeCarret)
   }
 
   async function fetchCommits() {
@@ -83,11 +86,13 @@ export default function GithubPullCommit({ trigger, token }) {
 
     selectedSha = commits[0].sha
 
+    const { top, left } = position(inputElement)
     const list = `
       <ul
         id="${COMMIT_LIST_ID}"
         role="listbox"
         class="suggester-container suggester suggestions list-style-none position-absolute"
+        style="top: ${top}px; left: ${left}px;"
       >
         ${commits
           .map(

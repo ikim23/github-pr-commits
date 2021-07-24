@@ -27,7 +27,7 @@ $(() => {
     })
     .on('keydown', (event) => {
       const handleKey = keyActions[event.key]
-      if (handleKey) {
+      if (app.isOpen() && handleKey) {
         event.preventDefault()
         handleKey()
       }

@@ -1,5 +1,13 @@
 {
   "files.exclude": {
-    ".parcel-cache": true
+    ".editorconfig": true,
+    ".npmrc": true,
+    ".nvmrc": true,
+    ".parcel-cache": true,
+    ".parcelrc": true,
+    "dist": true,
+    "node_modules": true,
+    "package-lock.json": true,
+    "LICENSE": true
   }
 }

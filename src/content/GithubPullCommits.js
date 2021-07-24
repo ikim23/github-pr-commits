@@ -3,17 +3,9 @@ import $ from 'jquery'
 import escapeRegex from 'escape-string-regexp'
 import { position } from 'caret-pos'
 import { Octokit } from '@octokit/core'
-import { isDev } from './utils'
 
 const PULL_URL_PATTERN = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)*/
 const COMMIT_LIST_ID = 'gh-pull-commits'
-
-function createOctokit(token) {
-  if (isDev()) {
-    return new Octokit({ auth: token ?? process.env.GITHUB_TOKEN })
-  }
-  return new Octokit(token ? { auth: token } : undefined)
-}
 
 function parsePullUrl() {
   const match = window.location.href.match(PULL_URL_PATTERN)
@@ -27,7 +19,7 @@ function parsePullUrl() {
 }
 
 export default function GithubPullCommit({ trigger, token }) {
-  const octokit = createOctokit(token)
+  const octokit = new Octokit(token ? { auth: token } : undefined)
   let input = null
   let commits = []
   let selectedSha = ''
@@ -43,18 +35,10 @@ export default function GithubPullCommit({ trigger, token }) {
     close,
   }
 
-  function canOpen(inputElement) {
-    const { value, selectionEnd: carret } = inputElement
-
-    if (value == trigger) {
-      return true
-    }
-
-    if (value.length == carret) {
-      return new RegExp(`\\s${escapeRegex(trigger)}$`).test(value)
-    }
-
-    return new RegExp(`\\s${escapeRegex(trigger)}\\s$`).test(value.substr(0, carret + 1))
+  function canOpen({ key, target: { value, selectionEnd: carret } }) {
+    return (
+      key == trigger.substr(-1) && new RegExp(`(^|\\s)${escapeRegex(trigger)}\\s?$`).test(value.substr(0, carret + 1))
+    )
   }
 
   async function fetchCommits() {
@@ -138,9 +122,9 @@ export default function GithubPullCommit({ trigger, token }) {
   function enterCommit(sha) {
     const { value, selectionEnd: carret } = input
 
-    let newValue = value.substring(0, carret - trigger.length) + sha
+    let newValue = value.substr(0, carret - trigger.length) + sha
     const newCarrent = newValue.length
-    newValue += value.substring(carret)
+    newValue += value.substr(carret)
 
     input.value = newValue
     input.selectionEnd = newCarrent

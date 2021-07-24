@@ -1,6 +1,6 @@
 import $ from 'jquery'
 import GithubPullCommit from './GithubPullCommits'
-import { getOptions } from './storage'
+import { getOptions } from '../utils'
 
 $(() => {
   let app = null
@@ -18,18 +18,18 @@ $(() => {
         app.fetchCommits()
       })
     })
-    .on('input', (event) => {
-      if (app.canOpen(event.target)) {
-        app.open(event.currentTarget)
-      } else {
-        app.close()
-      }
-    })
     .on('keydown', (event) => {
       const handleKey = keyActions[event.key]
       if (app.isOpen() && handleKey) {
         event.preventDefault()
         handleKey()
+      } else {
+        app.close()
+      }
+    })
+    .on('keyup', (event) => {
+      if (app.canOpen(event)) {
+        app.open(event.currentTarget)
       }
     })
 })

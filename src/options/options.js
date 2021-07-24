@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { getOptions, setOptions } from './storage'
+import { getOptions, setOptions } from '../utils'
 
 $(() => {
   const trigger = $('#trigger')
@@ -11,6 +11,16 @@ $(() => {
     }
     if (options.token) {
       token.val(options.token)
+    }
+  })
+
+  $('.submit').on('click', () => {
+    console.log('validate')
+    const [triggerElement] = trigger
+    if (triggerElement.validity.patternMismatch) {
+      triggerElement.setCustomValidity('Field cannot contain white characters.')
+    } else {
+      triggerElement.setCustomValidity('')
     }
   })
 

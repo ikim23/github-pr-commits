@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import $ from 'jquery'
-import { Octokit } from 'octokit'
+import { Octokit } from '@octokit/core'
 import { isDev } from './utils'
 
 const PULL_URL_PATTERN = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)*/

@@ -1,11 +1,10 @@
 {
   "manifest_version": 2,
-  "name": "github-pr-commits",
+  "name": "Github Pull Request Commits",
   "version": "1.0.0",
-  "description": "github-commit",
+  "description": "Suggest Pull Request commits white typing",
   "minimum_chrome_version": "60",
   "permissions": ["https://api.github.com/*", "storage"],
-  "optional_permissions": ["<all_urls>"],
   "content_scripts": [
     {
       "run_at": "document_start",

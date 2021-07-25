@@ -27,7 +27,6 @@
     "@octokit/core": "3.5.1",
     "caret-pos": "2.0.0",
     "escape-string-regexp": "1.0.5",
-    "jquery": "3.6.0",
     "lodash": "4.17.21"
   },
   "devDependencies": {

@@ -1,8 +1,8 @@
 import _ from 'lodash'
-import $ from 'jquery'
 import escapeRegex from 'escape-string-regexp'
 import { position } from 'caret-pos'
 import { Octokit } from '@octokit/core'
+import { getParent } from '../utils'
 
 const PULL_URL_PATTERN = /https:\/\/github\.com\/([^\/]+)\/([^\/]+)\/pull\/(\d+)*/
 const COMMIT_LIST_ID = 'gh-pull-commits'
@@ -104,18 +104,19 @@ export default function GithubPullCommit({ trigger, token }) {
 
     input = inputElement
 
-    $(input).parents('.write-content').first().append(list)
-    $(`#${COMMIT_LIST_ID} > li`).on('click', (event) => {
-      const sha = $(event.target).attr('data-value')
-      enterCommit(sha)
+    getParent(input, '.write-content').insertAdjacentHTML('beforeend', list)
+    _.each(document.querySelectorAll(`#${COMMIT_LIST_ID} > li`), (commit) => {
+      commit.addEventListener('click', (event) => {
+        const sha = event.target.getAttribute('data-value')
+        enterCommit(sha)
+      })
     })
   }
 
   function update() {
-    $(`#${COMMIT_LIST_ID} > li`).each((index, li) => {
-      const commit = $(li)
-      const sha = commit.attr('data-value')
-      commit.attr('aria-selected', sha == selectedSha)
+    _.each(document.querySelectorAll(`#${COMMIT_LIST_ID} > li`), (commit) => {
+      const sha = commit.getAttribute('data-value')
+      commit.setAttribute('aria-selected', sha == selectedSha)
     })
   }
 
@@ -159,6 +160,6 @@ export default function GithubPullCommit({ trigger, token }) {
     }
 
     input = null
-    $(`#${COMMIT_LIST_ID}`).remove()
+    document.querySelector(`#${COMMIT_LIST_ID}`).remove()
   }
 }

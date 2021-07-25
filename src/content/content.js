@@ -1,8 +1,8 @@
-import $ from 'jquery'
+import _ from 'lodash'
 import GithubPullCommit from './GithubPullCommits'
 import { getOptions } from '../utils'
 
-$(() => {
+window.addEventListener('DOMContentLoaded', () => {
   let app = null
   const keyActions = {
     Enter: () => app.enterCommit(),
@@ -11,14 +11,14 @@ $(() => {
     ArrowDown: () => app.selectNextCommit(),
   }
 
-  $('.comment-form-textarea')
-    .on('focus', () => {
+  _.each(document.querySelectorAll('.comment-form-textarea'), (form) => {
+    form.addEventListener('focus', () => {
       getOptions((options) => {
         app = GithubPullCommit(options)
         app.fetchCommits()
       })
     })
-    .on('keydown', (event) => {
+    form.addEventListener('keydown', (event) => {
       const handleKey = keyActions[event.key]
       if (app.isOpen() && handleKey) {
         event.preventDefault()
@@ -27,9 +27,10 @@ $(() => {
         app.close()
       }
     })
-    .on('keyup', (event) => {
+    form.addEventListener('keyup', (event) => {
       if (app.canOpen(event)) {
         app.open(event.currentTarget)
       }
     })
+  })
 })

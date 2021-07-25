@@ -2,6 +2,16 @@ function isDev() {
   return process.env.NODE_ENV == 'development'
 }
 
+export function getParent(element, parentSelector) {
+  let currentElement = element
+  while ((currentElement = currentElement.parentNode)) {
+    if (currentElement.matches(parentSelector)) {
+      return currentElement
+    }
+  }
+  return null
+}
+
 export function setOptions({ trigger, token }) {
   chrome.storage.local.set({ trigger, token })
 }

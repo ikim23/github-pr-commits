@@ -121,6 +121,10 @@ export default function GithubPullCommit({ trigger, token }) {
   }
 
   function enterCommit(sha) {
+    if (!sha) {
+      return
+    }
+
     const { value, selectionEnd: carret } = input
 
     let newValue = value.substr(0, carret - trigger.length) + sha

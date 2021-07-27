@@ -1,10 +1,7 @@
-html {
-  font-size: 14px;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
 body {
   margin: 0;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
@@ -33,4 +30,14 @@ body {
 
 .submit {
   padding: 0.5em 1em;
+}
+
+.success {
+  margin-left: 0.5em;
+  opacity: 0;
+  transition: opacity 250ms ease;
+}
+
+.success.on {
+  opacity: 1;
 }

@@ -3,6 +3,7 @@ import { getOptions, setOptions } from '../utils'
 window.addEventListener('DOMContentLoaded', () => {
   const trigger = document.querySelector('#trigger')
   const token = document.querySelector('#token')
+  const success = document.querySelector('.success')
 
   getOptions((options) => {
     if (options.trigger) {
@@ -13,9 +14,16 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   })
 
+  const resetSuccess = () => {
+    success.classList.remove('on')
+  }
+
+  trigger.addEventListener('input', resetSuccess)
+  token.addEventListener('input', resetSuccess)
+
   document.querySelector('.submit').addEventListener('click', () => {
     if (trigger.validity.patternMismatch) {
-      trigger.setCustomValidity('Field cannot contain white characters.')
+      trigger.setCustomValidity('Field cannot contain spaces.')
     } else {
       trigger.setCustomValidity('')
     }
@@ -28,5 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
       trigger: trigger.value,
       token: token.value,
     })
+
+    success.classList.add('on')
   })
 })

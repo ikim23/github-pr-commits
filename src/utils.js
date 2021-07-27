@@ -12,6 +12,20 @@ export function getParent(element, parentSelector) {
   return null
 }
 
+export function addLocationChangeListener(listener) {
+  let prevHref = null
+
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach(() => {
+      if (prevHref != document.location.href) {
+        listener((prevHref = document.location.href))
+      }
+    })
+  })
+
+  observer.observe(document.querySelector('body'), { childList: true, subtree: true })
+}
+
 export function setOptions({ trigger, token }) {
   chrome.storage.local.set({ trigger, token })
 }

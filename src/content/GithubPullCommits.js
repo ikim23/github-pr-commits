@@ -37,7 +37,9 @@ export default function GithubPullCommit({ trigger, token }) {
 
   function canOpen({ key, target: { value, selectionEnd: carret } }) {
     return (
-      key == trigger.substr(-1) && new RegExp(`(^|\\s)${escapeRegex(trigger)}\\s?$`).test(value.substr(0, carret + 1))
+      commits.length > 0 &&
+      key == trigger.substr(-1) &&
+      new RegExp(`(^|\\s)${escapeRegex(trigger)}\\s?$`).test(value.substr(0, carret + 1))
     )
   }
 

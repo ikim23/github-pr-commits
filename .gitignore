@@ -3,5 +3,6 @@ node_modules/
 
 .parcel-cache/
 dist/
+source.zip
 
 .env.local

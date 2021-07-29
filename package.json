@@ -1,6 +1,6 @@
 {
   "name": "github-pr-commits",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Suggest Pull Request commits white typing",
   "keywords": [
     "github",
@@ -21,7 +21,9 @@
   },
   "scripts": {
     "start": "parcel src/manifest.json --host localhost --target webext-dev",
-    "build": "parcel build src/manifest.json --target webext-prod"
+    "build": "parcel build src/manifest.json --target webext-prod",
+    "postbuild": "cd dist/webext-prod; zip -r -FS github-pr-commits.zip *",
+    "zip:source": "git archive -o source.zip HEAD"
   },
   "dependencies": {
     "@octokit/core": "3.5.1",

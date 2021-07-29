@@ -6,6 +6,7 @@
     ".parcel-cache": true,
     ".parcelrc": true,
     "dist": true,
+    "source.zip": true,
     "node_modules": true,
     "screenshots": true,
     "package-lock.json": true,

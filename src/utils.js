@@ -46,3 +46,11 @@ export function getOptions(callback) {
     callback(optionsWithDefaults)
   })
 }
+
+export function addOptionsChangeListener(callback) {
+  chrome.storage.onChanged.addListener((_, areaName) => {
+    if (areaName == 'local') {
+      getOptions(callback)
+    }
+  })
+}

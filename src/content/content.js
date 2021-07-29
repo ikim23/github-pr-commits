@@ -1,28 +1,31 @@
 import _ from 'lodash'
 import GithubPullCommit from './GithubPullCommits'
-import { getOptions, addLocationChangeListener } from '../utils'
+import { addLocationChangeListener, getOptions, addOptionsChangeListener } from '../utils'
 
 const COMMENT_FORM_CLASS = 'comment-form-textarea'
 
 window.addEventListener('DOMContentLoaded', () => {
   let app = null
+  const initialize = (options) => {
+    app = GithubPullCommit(options)
+    app.fetchCommits()
+  }
+  const fetchCommits = () => {
+    app.fetchCommits()
+  }
+
+  getOptions(initialize)
+  addOptionsChangeListener(initialize)
+
+  window.addEventListener('focus', fetchCommits)
+  addLocationChangeListener(fetchCommits)
+
   const keyActions = {
     Enter: () => app.enterCommit(),
     Escape: () => app.close(),
     ArrowUp: () => app.selectPreviousCommit(),
     ArrowDown: () => app.selectNextCommit(),
   }
-
-  const initialize = () => {
-    getOptions((options) => {
-      app = GithubPullCommit(options)
-      app.fetchCommits()
-    })
-  }
-
-  initialize()
-  addLocationChangeListener(initialize)
-  window.addEventListener('focus', initialize)
 
   window.addEventListener('keyup', (event) => {
     if (event.target.classList.contains(COMMENT_FORM_CLASS) && app.canOpen(event)) {

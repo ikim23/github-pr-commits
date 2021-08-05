@@ -11,15 +11,18 @@ const COMMENT_FORM_CLASS = 'comment-form-textarea'
  *  - new commit in timeline
  */
 function addPullRequestPageListener(listener) {
+  const getCommitCount = () => document.querySelectorAll('.js-commit').length
+
   let prevHref = null
-  let commitCount = 0
+  let commitCount = getCommitCount()
 
   const observer = new MutationObserver(() => {
     if (prevHref != document.location.href) {
       prevHref = document.location.href
+      commitCount = getCommitCount()
       listener()
     } else {
-      const currentCommitCount = document.querySelectorAll('.js-commit').length
+      const currentCommitCount = getCommitCount()
       if (commitCount < currentCommitCount) {
         commitCount = currentCommitCount
         listener()

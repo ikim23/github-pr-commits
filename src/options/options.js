@@ -10,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
       trigger.value = options.trigger
     }
     if (options.token) {
-      token.vallue = options.token
+      token.value = options.token
     }
   })
 

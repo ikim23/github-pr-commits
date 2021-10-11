@@ -1,3 +1,10 @@
+## [0.1.4](https://github.com/ikim23/github-pr-commits/compare/v0.1.3...v0.1.4) (2021-10-11)
+
+
+### Bug Fixes
+
+* force publish to test semantic-release ([ea81e39](https://github.com/ikim23/github-pr-commits/commit/ea81e39f2909793e97e52d20bbd2559155bc28c5))
+
 # Changelog
 
 All notable changes to this project will be documented in this file.

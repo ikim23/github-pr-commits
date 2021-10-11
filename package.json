@@ -33,11 +33,17 @@
   },
   "devDependencies": {
     "@parcel/config-webextension": "2.0.0-beta.3.1",
+    "cz-conventional-changelog": "3.3.0",
     "parcel": "2.0.0-beta.3.1"
   },
   "prettier": {
     "semi": false,
     "singleQuote": true,
     "printWidth": 120
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
